@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:xamify/signin.dart';
 
 class ForgotPage extends StatefulWidget {
   const ForgotPage({super.key});

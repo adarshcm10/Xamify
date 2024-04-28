@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:xamify/home.dart';
-import 'package:xamify/signin.dart';
 import 'package:xamify/transitions.dart';
 
 class SignUp extends StatefulWidget {
@@ -247,7 +246,7 @@ class _SignUpState extends State<SignUp> {
                 Center(
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.push(context, EnterRoute(page: const SignIn()));
+                      Navigator.pop(context);
                     },
                     child: const Text(
                       'Sign in to your account',
