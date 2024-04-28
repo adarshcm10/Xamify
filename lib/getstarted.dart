@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:xamify/signin.dart';
+import 'package:xamify/transitions.dart';
 
 class GetStarted extends StatefulWidget {
   const GetStarted({super.key});
@@ -14,7 +15,7 @@ class _GetStartedState extends State<GetStarted> {
     return Scaffold(
       body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Center(
@@ -30,13 +31,11 @@ class _GetStartedState extends State<GetStarted> {
             Center(
               child: Image.asset(
                 'assets/StartPage.png',
-                width: 356,
                 height: 266,
               ),
             ),
             const SizedBox(
-              height: 74,
-              width: 212,
+              height: 40,
             ),
             const Row(
               children: [
@@ -49,14 +48,13 @@ class _GetStartedState extends State<GetStarted> {
                       fontSize: 30,
                       fontFamily: 'Montserrat',
                       fontWeight: FontWeight.w900,
-                      height: 0,
                     ),
                   ),
                 ),
               ],
             ),
             const SizedBox(
-              height: 12,
+              height: 10,
             ),
             const Row(
               children: [
@@ -79,18 +77,15 @@ class _GetStartedState extends State<GetStarted> {
               height: 25,
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 30),
+              padding: const EdgeInsets.only(left: 30, bottom: 40),
               child: Row(
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SignIn()));
+                      Navigator.push(context, EnterRoute(page: const SignIn()));
                     },
                     child: Container(
-                      width: 119,
+                      width: 120,
                       height: 40,
                       decoration: ShapeDecoration(
                         color: Colors.white,
@@ -99,26 +94,24 @@ class _GetStartedState extends State<GetStarted> {
                         ),
                       ),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Padding(
-                            padding: EdgeInsets.only(left: 23),
-                            child: Text(
-                              'Eplore',
-                              style: TextStyle(
-                                color: Color(0xFF1E7BC5),
-                                fontSize: 16,
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.w500,
-                                height: 0,
-                              ),
+                          const Text(
+                            'Explore',
+                            style: TextStyle(
+                              color: Color(0xFF1E7BC5),
+                              fontSize: 16,
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w500,
+                              height: 0,
                             ),
                           ),
                           const SizedBox(
-                            width: 10,
+                            width: 5,
                           ),
                           Image.asset(
                             'assets/arrow.png',
-                            height: 20,
+                            height: 15,
                           )
                         ],
                       ),
