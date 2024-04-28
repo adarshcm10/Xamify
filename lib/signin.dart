@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:xamify/forgot.dart';
+import 'package:xamify/home.dart';
 import 'package:xamify/signup.dart';
 import 'package:xamify/transitions.dart';
 
@@ -184,7 +185,7 @@ class _SignInState extends State<SignIn> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const SignIn()));
+                                builder: (context) => const HomePage()));
                       },
                       child: Container(
                         width: double.infinity,
@@ -227,9 +228,7 @@ class _SignInState extends State<SignIn> {
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const SignUp()));
+                        context, SlideRightRoute(page: const SignUp()));
                   },
                   child: const Text(
                     'Create your free account ',

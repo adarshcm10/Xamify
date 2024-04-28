@@ -98,10 +98,7 @@ class _ForgotPageState extends State<ForgotPage> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.pop(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const SignIn()));
+                    Navigator.pop(context);
                   },
                   child: Container(
                     width: double.infinity,
