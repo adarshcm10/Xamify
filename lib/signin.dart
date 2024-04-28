@@ -103,6 +103,13 @@ class _SignInState extends State<SignIn> {
                   height: 50,
                   child: TextField(
                     decoration: InputDecoration(
+                        prefixIcon: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Image.asset(
+                            'assets/mail.png',
+                            height: 10,
+                          ),
+                        ),
                         hintText: 'Email Address',
                         hintStyle: TextStyle(
                           color: Colors.white.withOpacity(0.699999988079071),
@@ -114,9 +121,10 @@ class _SignInState extends State<SignIn> {
                             borderRadius: BorderRadius.circular(10),
                             borderSide: const BorderSide(
                                 color: Color(0xFFBFDAEF), width: 1)),
-                        focusedBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Color(0xFFBFDAEF), width: 1))),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(6),
+                            borderSide: const BorderSide(
+                                color: Color(0xFFFFFFFF), width: 1))),
                     style: const TextStyle(color: Colors.white, fontSize: 20),
                     cursorColor: Colors.white,
                   ),
@@ -128,6 +136,14 @@ class _SignInState extends State<SignIn> {
                   height: 50,
                   child: TextField(
                     decoration: InputDecoration(
+                        prefixIcon: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 15, top: 20, bottom: 20, right: 20),
+                          child: Image.asset(
+                            'assets/password.png',
+                            height: 10,
+                          ),
+                        ),
                         suffixIcon: IconButton(
                           onPressed: toggleicon,
                           icon: eyeicon,
@@ -144,9 +160,10 @@ class _SignInState extends State<SignIn> {
                             borderRadius: BorderRadius.circular(10),
                             borderSide: const BorderSide(
                                 color: Color(0xFFBFDAEF), width: 1)),
-                        focusedBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Color(0xFFBFDAEF), width: 1))),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(6),
+                            borderSide: const BorderSide(
+                                color: Color(0xFFFFFFFF), width: 1))),
                     style: const TextStyle(color: Colors.white, fontSize: 20),
                     obscureText: !visible,
                     cursorColor: Colors.white,
