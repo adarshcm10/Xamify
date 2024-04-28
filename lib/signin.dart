@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:xamify/forgot.dart';
 import 'package:xamify/home.dart';
@@ -198,20 +200,12 @@ class _SignInState extends State<SignIn> {
                         //if email is valid then sign in user and goto homepage else show error message
                         if (emailController.text.isNotEmpty &&
                             passwordController.text.isNotEmpty) {
-                          FirebaseAuth.instance
-                              .signInWithEmailAndPassword(
-                                  email: emailController.text,
-                                  password: passwordController.text)
-                              .then((value) {
-                            Navigator.push(
-                                context, FadeRoute(page: const HomePage()));
-                          }).catchError((e) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    backgroundColor: Color(0xffff8800),
-                                    content: Text('Invalid email or password!'),
-                                    duration: Duration(seconds: 3)));
-                          });
+                          Navigator.push(
+                              context,
+                              FadeRoute(
+                                  page: SpalshScreen(
+                                      email: emailController.text,
+                                      password: passwordController.text)));
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
@@ -292,6 +286,52 @@ class _SignInState extends State<SignIn> {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class SpalshScreen extends StatefulWidget {
+  String email;
+  String password;
+  SpalshScreen({super.key, required this.email, required this.password});
+
+  @override
+  State<SpalshScreen> createState() => _SpalshScreenState();
+}
+
+class _SpalshScreenState extends State<SpalshScreen> {
+  void Signin() {
+    FirebaseAuth.instance
+        .signInWithEmailAndPassword(
+            email: widget.email, password: widget.password)
+        .then((value) {
+      Navigator.pushReplacement(context, FadeRoute(page: const HomePage()));
+    }).catchError((e) {
+      //pop
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: const Color(0xffff8800),
+          content: Text(e.toString()),
+          duration: const Duration(seconds: 3)));
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Signin();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Image.asset(
+          'assets/loading.gif',
+          fit: BoxFit.fill,
+          //
         ),
       ),
     );
