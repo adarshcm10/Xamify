@@ -292,6 +292,7 @@ class _SignInState extends State<SignIn> {
   }
 }
 
+// ignore: must_be_immutable
 class SpalshScreen extends StatefulWidget {
   String email;
   String password;
@@ -311,10 +312,10 @@ class _SpalshScreenState extends State<SpalshScreen> {
     }).catchError((e) {
       //pop
       Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          backgroundColor: const Color(0xffff8800),
-          content: Text(e.toString()),
-          duration: const Duration(seconds: 3)));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: Color(0xffff8800),
+          content: Text('Invalid email or password!'),
+          duration: Duration(seconds: 3)));
     });
   }
 
