@@ -11,7 +11,7 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   bool visible = false;
-  var eyeicon = const Icon(Icons.visibility_off);
+  var eyeicon = const Icon(Icons.visibility);
   void toggleicon() {
     setState(() {
       visible = !visible;
@@ -28,95 +28,79 @@ class _SignInState extends State<SignIn> {
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(
-                height: 60,
-              ),
-              Center(
-                child: Image.asset(
-                  'assets/name.png',
-                  width: 300,
-                  height: 37,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 30, right: 30),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(
+                  height: 30,
                 ),
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              Image.asset(
-                'assets/Sign in.png',
-                width: 236.97,
-                height: 203.38,
-              ),
-              const SizedBox(
-                height: 35,
-              ),
-              const Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 30),
-                    child: Text(
+                Center(
+                  child: Image.asset(
+                    'assets/name.png',
+                    width: 300,
+                    height: 37,
+                  ),
+                ),
+                const SizedBox(
+                  height: 50,
+                ),
+                Image.asset(
+                  'assets/Sign in.png',
+                  width: 236.97,
+                  height: 203.38,
+                ),
+                const SizedBox(
+                  height: 35,
+                ),
+                const Row(
+                  children: [
+                    Text(
                       'Coffee in hand, books open?',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 20,
+                        fontSize: 19,
                         fontFamily: 'Montserrat',
                         fontWeight: FontWeight.w400,
                       ),
                     ),
-                  ),
-                ],
-              ),
-              const Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 30),
-                    child: Text(
+                  ],
+                ),
+                const Row(
+                  children: [
+                    Text(
                       'Sign in',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 45,
+                        fontSize: 40,
                         fontFamily: 'Montserrat',
                         fontWeight: FontWeight.w900,
                       ),
                     ),
-                  ),
-                ],
-              ),
-              const Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 30),
-                    child: Text(
+                  ],
+                ),
+                const Row(
+                  children: [
+                    Text(
                       'to stay updated.',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 20,
+                        fontSize: 19,
                         fontFamily: 'Montserrat',
                         fontWeight: FontWeight.w400,
                       ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 30, right: 30),
-                child: SizedBox(
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
                   height: 50,
                   child: TextField(
                     decoration: InputDecoration(
-                        // prefixIcon: Container(
-                        //   width: 5.0,
-                        //   height: 16.0,
-                        //   child: Image.asset(
-                        //     'assets/mail.png',
-                        //   ),
-                        // ),
                         hintText: 'Email Address',
                         hintStyle: TextStyle(
                           color: Colors.white.withOpacity(0.699999988079071),
@@ -135,13 +119,10 @@ class _SignInState extends State<SignIn> {
                     cursorColor: Colors.white,
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 30, right: 30),
-                child: SizedBox(
+                const SizedBox(
+                  height: 7,
+                ),
+                SizedBox(
                   height: 50,
                   child: TextField(
                     decoration: InputDecoration(
@@ -169,16 +150,13 @@ class _SignInState extends State<SignIn> {
                     cursorColor: Colors.white,
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 7,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 30),
-                    child: GestureDetector(
+                const SizedBox(
+                  height: 7,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    GestureDetector(
                       onTap: () {
                         Navigator.push(
                             context,
@@ -195,17 +173,14 @@ class _SignInState extends State<SignIn> {
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30, right: 30),
-                    child: GestureDetector(
+                  ],
+                ),
+                const SizedBox(
+                  height: 7,
+                ),
+                Column(
+                  children: [
+                    GestureDetector(
                       onTap: () {
                         Navigator.push(
                             context,
@@ -227,7 +202,7 @@ class _SignInState extends State<SignIn> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Color(0xFF1E7BC5),
-                              fontSize: 22,
+                              fontSize: 19,
                               fontFamily: 'Montserrat',
                               fontWeight: FontWeight.w500,
                             ),
@@ -235,51 +210,48 @@ class _SignInState extends State<SignIn> {
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              const Text(
-                'Doesn’t have an account?',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 15,
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w400,
+                  ],
                 ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const SignUp()));
-                },
-                child: const Text(
-                  'Create your free account ',
+                const SizedBox(
+                  height: 20,
+                ),
+                const Text(
+                  'Doesn’t have an account?',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 19,
+                    fontSize: 13,
                     fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
-              ),
-              Container(
-                width: 195,
-                decoration: const ShapeDecoration(
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(
-                      width: 1,
-                      strokeAlign: BorderSide.strokeAlignCenter,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const SignUp()));
+                  },
+                  child: const Text(
+                    'Create your free account ',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
                       color: Colors.white,
+                      fontSize: 16,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w500,
+                      decoration: TextDecoration.underline,
+                      decorationColor: Color(0xFFBFDAEF),
+                      //give more thickness to underline
+                      decorationThickness: 1,
                     ),
                   ),
                 ),
-              )
-            ],
+                const SizedBox(
+                  height: 30,
+                )
+              ],
+            ),
           ),
         ),
       ),
