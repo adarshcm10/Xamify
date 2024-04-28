@@ -14,88 +14,64 @@ class _ForgotPageState extends State<ForgotPage> {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(
-                height: 60,
-              ),
-              Center(
-                child: Image.asset(
-                  'assets/name.png',
-                  width: 300,
-                  height: 37,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 30, right: 30),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 60,
                 ),
-              ),
-              const SizedBox(
-                height: 130,
-              ),
-              Image.asset(
-                'assets/forgot.png',
-                width: 252,
-                height: 250,
-              ),
-              const SizedBox(
-                height: 48,
-              ),
-              const Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 30),
-                    child: Text(
-                      'Lost your password?',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
+                Center(
+                  child: Image.asset(
+                    'assets/name.png',
+                    height: 37,
                   ),
-                ],
-              ),
-              const Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 30),
-                    child: Text(
-                      'We got it covered!',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 29,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
+                ),
+                const SizedBox(
+                  height: 90,
+                ),
+                Center(
+                  child: Image.asset(
+                    'assets/forgot.png',
+                    height: 250,
                   ),
-                ],
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              const Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 30),
-                    child: Text(
-                      'Enter email to get reset link',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
+                ),
+                const SizedBox(
+                  height: 90,
+                ),
+                const Text(
+                  'Lost your password?',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w400,
                   ),
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 30, right: 30),
-                child: SizedBox(
+                ),
+                const Text(
+                  'We got it covered!',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 27,
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+                const Text(
+                  'Enter email to get reset link',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
                   height: 50,
                   child: TextField(
                     decoration: InputDecoration(
@@ -117,48 +93,41 @@ class _ForgotPageState extends State<ForgotPage> {
                     cursorColor: Colors.white,
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30, right: 30),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pop(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const SignIn()));
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        height: 50,
-                        decoration: ShapeDecoration(
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'Submit',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Color(0xFF1E7BC5),
-                              fontSize: 22,
-                              fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
+                const SizedBox(
+                  height: 10,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const SignIn()));
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    height: 50,
+                    decoration: ShapeDecoration(
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        'Submit',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Color(0xFF1E7BC5),
+                          fontSize: 19,
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
                   ),
-                ],
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
