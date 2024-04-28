@@ -3,6 +3,8 @@ import 'package:xamify/forgot.dart';
 import 'package:xamify/home.dart';
 import 'package:xamify/signup.dart';
 import 'package:xamify/transitions.dart';
+//auth
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -12,6 +14,8 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   bool visible = false;
   var eyeicon = const Icon(Icons.visibility);
   void toggleicon() {
@@ -34,7 +38,7 @@ class _SignInState extends State<SignIn> {
             padding: const EdgeInsets.only(left: 30, right: 30),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(
                   height: 30,
@@ -49,52 +53,42 @@ class _SignInState extends State<SignIn> {
                 const SizedBox(
                   height: 50,
                 ),
-                Image.asset(
-                  'assets/Sign in.png',
-                  width: 236.97,
-                  height: 203.38,
+                Center(
+                  child: Image.asset(
+                    'assets/Sign in.png',
+                    width: 236.97,
+                    height: 203.38,
+                  ),
                 ),
                 const SizedBox(
                   height: 35,
                 ),
-                const Row(
-                  children: [
-                    Text(
-                      'Coffee in hand, books open?',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 19,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ],
+                const Text(
+                  'Coffee in hand, books open?',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 19,
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
-                const Row(
-                  children: [
-                    Text(
-                      'Sign in',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 40,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                  ],
+                const Text(
+                  'Sign in',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 40,
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w900,
+                  ),
                 ),
-                const Row(
-                  children: [
-                    Text(
-                      'to stay updated.',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 19,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ],
+                const Text(
+                  'to stay updated.',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 19,
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
                 const SizedBox(
                   height: 10,
@@ -102,6 +96,7 @@ class _SignInState extends State<SignIn> {
                 SizedBox(
                   height: 50,
                   child: TextField(
+                    controller: emailController,
                     decoration: InputDecoration(
                         prefixIcon: Padding(
                           padding: const EdgeInsets.all(15.0),
@@ -135,6 +130,7 @@ class _SignInState extends State<SignIn> {
                 SizedBox(
                   height: 50,
                   child: TextField(
+                    controller: passwordController,
                     decoration: InputDecoration(
                         prefixIcon: Padding(
                           padding: const EdgeInsets.only(
@@ -199,8 +195,34 @@ class _SignInState extends State<SignIn> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                            context, FadeRoute(page: const HomePage()));
+                        //if email is valid then sign in user and goto homepage else show error message
+                        if (emailController.text.isNotEmpty &&
+                            passwordController.text.isNotEmpty) {
+                          FirebaseAuth.instance
+                              .signInWithEmailAndPassword(
+                                  email: emailController.text,
+                                  password: passwordController.text)
+                              .then((value) {
+                            Navigator.push(
+                                context, FadeRoute(page: const HomePage()));
+                          }).catchError((e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    backgroundColor: Color(0xffff8800),
+                                    content: Text('Invalid email or password!'),
+                                    duration: Duration(seconds: 3)));
+                          });
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  backgroundColor: Color(0xffff8800),
+                                  content:
+                                      Text('Email or or password is empty!'),
+                                  duration: Duration(seconds: 3)));
+                        }
+
+                        // Navigator.push(
+                        //     context, FadeRoute(page: const HomePage()));
                       },
                       child: Container(
                         width: double.infinity,
@@ -230,33 +252,37 @@ class _SignInState extends State<SignIn> {
                 const SizedBox(
                   height: 20,
                 ),
-                const Text(
-                  'Doesn’t have an account?',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 13,
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context, SlideRightRoute(page: const SignUp()));
-                  },
-                  child: const Text(
-                    'Create your free account ',
+                const Center(
+                  child: Text(
+                    'Doesn’t have an account?',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 16,
+                      fontSize: 13,
                       fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.w500,
-                      decoration: TextDecoration.underline,
-                      decorationColor: Color(0xFFBFDAEF),
-                      //give more thickness to underline
-                      decorationThickness: 1,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+                Center(
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context, SlideRightRoute(page: const SignUp()));
+                    },
+                    child: const Text(
+                      'Create your free account ',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.w500,
+                        decoration: TextDecoration.underline,
+                        decorationColor: Color(0xFFBFDAEF),
+                        //give more thickness to underline
+                        decorationThickness: 1,
+                      ),
                     ),
                   ),
                 ),
