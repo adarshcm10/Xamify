@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:xamify/forgot.dart';
 import 'package:xamify/signup.dart';
+import 'package:xamify/transitions.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -159,9 +160,7 @@ class _SignInState extends State<SignIn> {
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const ForgotPage()));
+                            context, EnterRoute(page: const ForgotPage()));
                       },
                       child: const Text(
                         'Forgot password?',

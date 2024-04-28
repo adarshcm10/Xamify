@@ -82,7 +82,8 @@ class _GetStartedState extends State<GetStarted> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(context, EnterRoute(page: const SignIn()));
+                      Navigator.pushReplacement(
+                          context, DissolvePageRoute(page: const SignIn()));
                     },
                     child: Container(
                       width: 120,
