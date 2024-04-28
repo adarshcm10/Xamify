@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:xamify/home.dart';
 import 'package:xamify/transitions.dart';
+//auth
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -10,6 +12,11 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController retypePasswordController = TextEditingController();
+
   bool visible = false;
   var eyeicon = const Icon(Icons.visibility);
   void toggleicon() {
@@ -92,6 +99,7 @@ class _SignUpState extends State<SignUp> {
                 SizedBox(
                   height: 50,
                   child: TextField(
+                    controller: nameController,
                     decoration: InputDecoration(
                         hintText: 'Full Name',
                         hintStyle: TextStyle(
@@ -117,6 +125,7 @@ class _SignUpState extends State<SignUp> {
                 SizedBox(
                   height: 50,
                   child: TextField(
+                    controller: emailController,
                     decoration: InputDecoration(
                         hintText: 'Email Address',
                         hintStyle: TextStyle(
@@ -142,6 +151,7 @@ class _SignUpState extends State<SignUp> {
                 SizedBox(
                   height: 50,
                   child: TextField(
+                    controller: passwordController,
                     decoration: InputDecoration(
                         suffixIcon: IconButton(
                           onPressed: toggleicon,
@@ -173,6 +183,7 @@ class _SignUpState extends State<SignUp> {
                 SizedBox(
                   height: 50,
                   child: TextField(
+                    controller: retypePasswordController,
                     decoration: InputDecoration(
                         suffixIcon: IconButton(
                           onPressed: toggleicon1,
@@ -203,7 +214,61 @@ class _SignUpState extends State<SignUp> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(context, FadeRoute(page: const HomePage()));
+                    //if all fields are not empty
+                    if (nameController.text.isNotEmpty &&
+                        emailController.text.isNotEmpty &&
+                        passwordController.text.isNotEmpty &&
+                        retypePasswordController.text.isNotEmpty) {
+                      //if password and retype password are same
+                      if (passwordController.text ==
+                          retypePasswordController.text) {
+                        //if emailController.text contains a valid email signup
+                        if (emailController.text.contains('@') &&
+                            emailController.text.contains('.')) {
+                          //if password is greater than 6 characters
+                          if (passwordController.text.length > 7) {
+                            Navigator.push(
+                              context,
+                              FadeRoute(
+                                page: SpalshScreen(
+                                  email: emailController.text,
+                                  password: passwordController.text,
+                                ),
+                              ),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    backgroundColor: Color(0xffff8800),
+                                    content: Text(
+                                        'Password must be 8 character long!'),
+                                    duration: Duration(seconds: 3)));
+                          }
+                        } else {
+                          //if emailController.text does not contain a valid email
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  backgroundColor: Color(0xffff8800),
+                                  content: Text('Enter valid Email!'),
+                                  duration: Duration(seconds: 3)));
+                        }
+                      } else {
+                        //if password and retype password are not same Password and Retype Password are not same
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                            backgroundColor: Color(0xffff8800),
+                            content: Text(
+                                'Password and Retype Password are not same!'),
+                            duration: Duration(seconds: 3)));
+                      }
+                    } else {
+                      //if any field is empty
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          backgroundColor: Color(0xffff8800),
+                          content: Text('All fields are required!'),
+                          duration: Duration(seconds: 3)));
+                    }
+
+                    // Navigator.push(context, FadeRoute(page: const HomePage()));
                   },
                   child: Container(
                     width: double.infinity,
@@ -269,6 +334,54 @@ class _SignUpState extends State<SignUp> {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class SpalshScreen extends StatefulWidget {
+  String email;
+  String password;
+  SpalshScreen({super.key, required this.email, required this.password});
+
+  @override
+  State<SpalshScreen> createState() => _SpalshScreenState();
+}
+
+class _SpalshScreenState extends State<SpalshScreen> {
+  void Signup() {
+    FirebaseAuth.instance
+        .createUserWithEmailAndPassword(
+      email: widget.email,
+      password: widget.password,
+    )
+        .then((value) {
+      Navigator.pushReplacement(context, FadeRoute(page: const HomePage()));
+    }).catchError((e) {
+      //pop
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: Color(0xffff8800),
+          content: Text('Invalid Email or Password!'),
+          duration: Duration(seconds: 3)));
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Signup();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Image.asset(
+          'assets/loading.gif',
+          fit: BoxFit.fill,
+          //
         ),
       ),
     );
