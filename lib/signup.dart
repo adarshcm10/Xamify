@@ -3,6 +3,8 @@ import 'package:xamify/home.dart';
 import 'package:xamify/transitions.dart';
 //auth
 import 'package:firebase_auth/firebase_auth.dart';
+//firestore
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -233,6 +235,7 @@ class _SignUpState extends State<SignUp> {
                                 page: SpalshScreen(
                                   email: emailController.text,
                                   password: passwordController.text,
+                                  name: nameController.text,
                                 ),
                               ),
                             );
@@ -344,7 +347,12 @@ class _SignUpState extends State<SignUp> {
 class SpalshScreen extends StatefulWidget {
   String email;
   String password;
-  SpalshScreen({super.key, required this.email, required this.password});
+  String name;
+  SpalshScreen(
+      {super.key,
+      required this.email,
+      required this.password,
+      required this.name});
 
   @override
   State<SpalshScreen> createState() => _SpalshScreenState();
@@ -358,6 +366,11 @@ class _SpalshScreenState extends State<SpalshScreen> {
       password: widget.password,
     )
         .then((value) {
+      //save name to collection userdata and doc email
+      FirebaseFirestore.instance
+          .collection('userdata')
+          .doc(widget.email)
+          .set({'name': widget.name});
       Navigator.pushReplacement(context, FadeRoute(page: const HomePage()));
     }).catchError((e) {
       //pop
