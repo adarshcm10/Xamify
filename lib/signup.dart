@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:xamify/examsel.dart';
-import 'package:xamify/home.dart';
 import 'package:xamify/transitions.dart';
 //auth
 import 'package:firebase_auth/firebase_auth.dart';
