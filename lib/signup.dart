@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:xamify/examsel.dart';
 import 'package:xamify/home.dart';
 import 'package:xamify/transitions.dart';
 //auth
@@ -371,7 +372,7 @@ class _SpalshScreenState extends State<SpalshScreen> {
           .collection('userdata')
           .doc(widget.email)
           .set({'name': widget.name});
-      Navigator.pushReplacement(context, FadeRoute(page: const HomePage()));
+      Navigator.pushReplacement(context, FadeRoute(page: const ExamSelect()));
     }).catchError((e) {
       //pop
       Navigator.pop(context);
