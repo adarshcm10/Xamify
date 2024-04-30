@@ -143,6 +143,68 @@ class _HomePageState extends State<HomePage> {
             ),
 
             const SizedBox(height: 10),
+            const Text(
+              'My exams',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                fontFamily: 'Montserrat',
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+            const SizedBox(height: 10),
+            //display doc id of all docs in collection userdata, doc email and collection exams
+            StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('userdata')
+                  .doc(FirebaseAuth.instance.currentUser!.email)
+                  .collection('exams')
+                  .snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasData) {
+                  return Expanded(
+                    child: GridView.count(
+                      physics: const ClampingScrollPhysics(),
+                      crossAxisCount: 3,
+                      childAspectRatio: 2 /
+                          1, // Adjust this value to control the height of the children
+                      children:
+                          snapshot.data!.docs.map((DocumentSnapshot document) {
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 5),
+                          child: Container(
+                            decoration: ShapeDecoration(
+                              shape: RoundedRectangleBorder(
+                                side: const BorderSide(
+                                    width: 1, color: Color(0xFFBFDAEF)),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                document.id,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 13,
+                                  fontFamily: 'Montserrat',
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  );
+                } else {
+                  return const Text(
+                    'Loading...',
+                    style: TextStyle(color: Colors.white),
+                  );
+                }
+              },
+            ),
           ],
         ),
       ),
