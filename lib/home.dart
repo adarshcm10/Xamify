@@ -33,23 +33,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      drawer: Drawer(
-        child: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              //signout gesturedetector
-              GestureDetector(
-                onTap: () async {
-                  await FirebaseAuth.instance.signOut();
-                  Navigator.push(context, FadeRoute(page: const AuthPage()));
-                },
-                child: const Text('Sign Out'),
-              ),
-            ],
-          ),
-        ),
-      ),
       body: Padding(
         padding: const EdgeInsets.only(left: 30, right: 30),
         child: Column(
@@ -154,6 +137,73 @@ class _HomePageState extends State<HomePage> {
             ),
             const SizedBox(height: 10),
             //display doc id of all docs in collection userdata, doc email and collection exams
+            SizedBox(
+              height: 60,
+              child: StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection('userdata')
+                    .doc(FirebaseAuth.instance.currentUser!.email)
+                    .collection('exams')
+                    .limit(3)
+                    .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasData) {
+                    return Expanded(
+                      child: GridView.count(
+                        physics: const ClampingScrollPhysics(),
+                        crossAxisCount: 3,
+                        childAspectRatio: 2 /
+                            1, // Adjust this value to control the height of the children
+                        children: snapshot.data!.docs
+                            .map((DocumentSnapshot document) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 5),
+                            child: Container(
+                              decoration: ShapeDecoration(
+                                shape: RoundedRectangleBorder(
+                                  side: const BorderSide(
+                                      width: 1, color: Color(0xFFBFDAEF)),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  document.id,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 13,
+                                    fontFamily: 'Montserrat',
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  } else {
+                    return const Text(
+                      'Loading...',
+                      style: TextStyle(color: Colors.white),
+                    );
+                  }
+                },
+              ),
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              'Exams materials',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                fontFamily: 'Montserrat',
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+            const SizedBox(height: 10),
+            //get all doc id from collection, doc email and collection exams
             StreamBuilder(
               stream: FirebaseFirestore.instance
                   .collection('userdata')
@@ -163,44 +213,78 @@ class _HomePageState extends State<HomePage> {
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasData) {
-                  return Expanded(
-                    child: GridView.count(
-                      physics: const ClampingScrollPhysics(),
-                      crossAxisCount: 3,
-                      childAspectRatio: 2 /
-                          1, // Adjust this value to control the height of the children
-                      children:
-                          snapshot.data!.docs.map((DocumentSnapshot document) {
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 5),
-                          child: Container(
-                            decoration: ShapeDecoration(
-                              shape: RoundedRectangleBorder(
-                                side: const BorderSide(
-                                    width: 1, color: Color(0xFFBFDAEF)),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                document.id,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 13,
-                                  fontFamily: 'Montserrat',
-                                  fontWeight: FontWeight.w700,
+                  return Column(
+                    children:
+                        snapshot.data!.docs.map((DocumentSnapshot document) {
+                      return StreamBuilder(
+                        stream: FirebaseFirestore.instance
+                            .collection('exams')
+                            .doc(document.id)
+                            .collection('materials')
+                            .snapshots(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (snapshot.hasData) {
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 5),
+                              child: Padding(
+                                padding: const EdgeInsets.only(bottom: 5),
+                                child: Container(
+                                  width: double.infinity,
+                                  height: 55,
+                                  decoration: ShapeDecoration(
+                                    shape: RoundedRectangleBorder(
+                                      side: const BorderSide(
+                                          width: 1, color: Color(0xFFBFDAEF)),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          document.id,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 13,
+                                            fontFamily: 'Montserrat',
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                        Text(
+                                          '${snapshot.data!.docs.length} materials',
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 13,
+                                            fontFamily: 'Montserrat',
+                                            fontWeight: FontWeight.w200,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
+                            );
+                          } else {
+                            return const Text(
+                              'Loading...',
+                              style: TextStyle(color: Colors.white),
+                            );
+                          }
+                        },
+                      );
+                    }).toList(),
                   );
                 } else {
-                  return const Text(
-                    'Loading...',
-                    style: TextStyle(color: Colors.white),
+                  return Image.asset(
+                    'assets/loading.gif',
+                    fit: BoxFit.fill,
                   );
                 }
               },
