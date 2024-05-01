@@ -21,7 +21,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Xamify',
       theme: ThemeData(
-          useMaterial3: true, scaffoldBackgroundColor: const Color(0xff1E7BC5)),
+        useMaterial3: true,
+        scaffoldBackgroundColor: const Color(0xff1E7BC5),
+      ),
       home: const AuthPage(),
     );
   }
