@@ -7,6 +7,7 @@ import 'package:xamify/notificationdetails.dart';
 import 'package:xamify/transitions.dart';
 //firestore
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:xamify/usernotification.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -27,7 +28,15 @@ class _HomePageState extends State<HomePage> {
           Padding(
             padding: const EdgeInsets.only(right: 20),
             child: GestureDetector(
-              onTap: () {},
+              onTap: () {
+                //navigate to notification page
+                Navigator.push(
+                  context,
+                  EnterRoute(
+                    page: const UserNotification(),
+                  ),
+                );
+              },
               child: Image.asset('assets/notification.png', height: 24),
             ),
           ),
