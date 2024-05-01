@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 //auth
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/widgets.dart';
+import 'package:xamify/allexams.dart';
 import 'package:xamify/notificationdetails.dart';
 import 'package:xamify/transitions.dart';
 //firestore
@@ -147,14 +149,39 @@ class _HomePageState extends State<HomePage> {
             ),
 
             const SizedBox(height: 10),
-            const Text(
-              'My exams',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-                fontFamily: 'Montserrat',
-                fontWeight: FontWeight.w300,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'My exams',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w300,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    //goto all exams page slide transition
+                    Navigator.push(
+                      context,
+                      EnterRoute(
+                        page: const AllExams(),
+                      ),
+                    );
+                  },
+                  child: const Text(
+                    'View all',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w300,
+                    ),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 10),
             //display doc id of all docs in collection userdata, doc email and collection exams
@@ -179,7 +206,8 @@ class _HomePageState extends State<HomePage> {
                         children: snapshot.data!.docs
                             .map((DocumentSnapshot document) {
                           return Padding(
-                            padding: const EdgeInsets.only(right: 5),
+                            padding:
+                                const EdgeInsets.only(right: 2.5, left: 2.5),
                             child: Container(
                               decoration: ShapeDecoration(
                                 shape: RoundedRectangleBorder(
