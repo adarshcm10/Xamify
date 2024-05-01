@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:xamify/allexams.dart';
+import 'package:xamify/examdetails.dart';
 import 'package:xamify/notificationdetails.dart';
 import 'package:xamify/transitions.dart';
 //firestore
@@ -208,22 +209,33 @@ class _HomePageState extends State<HomePage> {
                           return Padding(
                             padding:
                                 const EdgeInsets.only(right: 2.5, left: 2.5),
-                            child: Container(
-                              decoration: ShapeDecoration(
-                                shape: RoundedRectangleBorder(
-                                  side: const BorderSide(
-                                      width: 1, color: Color(0xFFBFDAEF)),
-                                  borderRadius: BorderRadius.circular(10),
+                            child: GestureDetector(
+                              onTap: () {
+                                //navigate to exam details page with doc id
+                                Navigator.push(
+                                  context,
+                                  EnterRoute(
+                                    page: ExamDetails(docid: document.id),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                decoration: ShapeDecoration(
+                                  shape: RoundedRectangleBorder(
+                                    side: const BorderSide(
+                                        width: 1, color: Color(0xFFBFDAEF)),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
                                 ),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  document.id,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 13,
-                                    fontFamily: 'Montserrat',
-                                    fontWeight: FontWeight.w700,
+                                child: Center(
+                                  child: Text(
+                                    document.id,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 13,
+                                      fontFamily: 'Montserrat',
+                                      fontWeight: FontWeight.w700,
+                                    ),
                                   ),
                                 ),
                               ),
