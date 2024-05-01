@@ -18,7 +18,7 @@ class _AllExamsState extends State<AllExams> {
       appBar: AppBar(
         backgroundColor: const Color(0xff1E7BC5),
         title: Image.asset('assets/name.png', height: 24),
-        centerTitle: false,
+        centerTitle: true,
         //back button colour white
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
