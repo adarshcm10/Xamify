@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 //auth
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:xamify/authpage.dart';
+import 'package:xamify/notificationdetails.dart';
 import 'package:xamify/transitions.dart';
 //firestore
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -67,50 +67,62 @@ class _HomePageState extends State<HomePage> {
                         snapshot.data!.docs.map((DocumentSnapshot document) {
                       final Map<String, dynamic> data =
                           document.data() as Map<String, dynamic>;
-                      return Container(
-                        width: double.infinity,
-                        height: 60,
-                        decoration: ShapeDecoration(
-                          shape: RoundedRectangleBorder(
-                            side: const BorderSide(
-                                width: 1, color: Color(0xFFBFDAEF)),
-                            borderRadius: BorderRadius.circular(10),
+                      return GestureDetector(
+                        onTap: () {
+                          //navigate to notification details page with doc id
+                          Navigator.push(
+                            context,
+                            EnterRoute(
+                              page: NotificationDetails(docid: document.id),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          height: 60,
+                          decoration: ShapeDecoration(
+                            shape: RoundedRectangleBorder(
+                              side: const BorderSide(
+                                  width: 1, color: Color(0xFFBFDAEF)),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                           ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 10, right: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            // crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    data['title'],
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 13,
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.w700,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10, right: 20),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              // crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      data['title'],
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 13,
+                                        fontFamily: 'Montserrat',
+                                        fontWeight: FontWeight.w700,
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    data['head'].length > 22
-                                        ? data['head'].substring(0, 22) + '...'
-                                        : data['head'],
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 13,
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.w200,
-                                    ),
-                                  )
-                                ],
-                              ),
-                              Image.asset('assets/view.png', height: 10),
-                            ],
+                                    Text(
+                                      data['head'].length > 22
+                                          ? data['head'].substring(0, 22) +
+                                              '...'
+                                          : data['head'],
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 13,
+                                        fontFamily: 'Montserrat',
+                                        fontWeight: FontWeight.w200,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Image.asset('assets/view.png', height: 10),
+                              ],
+                            ),
                           ),
                         ),
                       );
