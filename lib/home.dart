@@ -73,73 +73,102 @@ class _HomePageState extends State<HomePage> {
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasData) {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children:
-                        snapshot.data!.docs.map((DocumentSnapshot document) {
-                      final Map<String, dynamic> data =
-                          document.data() as Map<String, dynamic>;
-                      return GestureDetector(
-                        onTap: () {
-                          //navigate to notification details page with doc id
-                          Navigator.push(
-                            context,
-                            EnterRoute(
-                              page: NotificationDetails(docid: document.id),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          width: double.infinity,
-                          height: 60,
-                          decoration: ShapeDecoration(
-                            shape: RoundedRectangleBorder(
-                              side: const BorderSide(
-                                  width: 1, color: Color(0xFFBFDAEF)),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10, right: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              // crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      data['title'],
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 13,
-                                        fontFamily: 'Montserrat',
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                    Text(
-                                      data['head'].length > 22
-                                          ? data['head'].substring(0, 22) +
-                                              '...'
-                                          : data['head'],
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 13,
-                                        fontFamily: 'Montserrat',
-                                        fontWeight: FontWeight.w200,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                Image.asset('assets/view.png', height: 10),
-                              ],
-                            ),
+                  //if there is nothing to display
+                  if (snapshot.data!.docs.isEmpty) {
+                    return Container(
+                      width: double.infinity,
+                      height: 60,
+                      decoration: ShapeDecoration(
+                        shape: RoundedRectangleBorder(
+                          side: const BorderSide(
+                              width: 1, color: Color(0xFFBFDAEF)),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          'No new notifications',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 13,
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w300,
                           ),
                         ),
-                      );
-                    }).toList(),
-                  );
+                      ),
+                    );
+                  } else {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children:
+                          snapshot.data!.docs.map((DocumentSnapshot document) {
+                        final Map<String, dynamic> data =
+                            document.data() as Map<String, dynamic>;
+                        return GestureDetector(
+                          onTap: () {
+                            //navigate to notification details page with doc id
+                            Navigator.push(
+                              context,
+                              EnterRoute(
+                                page: NotificationDetails(docid: document.id),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            height: 60,
+                            decoration: ShapeDecoration(
+                              shape: RoundedRectangleBorder(
+                                side: const BorderSide(
+                                    width: 1, color: Color(0xFFBFDAEF)),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 10, right: 20),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                // crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        data['title'],
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 13,
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                      Text(
+                                        data['head'].length > 22
+                                            ? data['head'].substring(0, 22) +
+                                                '...'
+                                            : data['head'],
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 13,
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.w200,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  Image.asset('assets/view.png', height: 10),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    );
+                  }
                 } else {
                   return const Text(
                     'Loading...',
