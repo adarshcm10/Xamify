@@ -86,6 +86,22 @@ class _ExamMaterialsState extends State<ExamMaterials> {
                                   true, // Optional: open the file when tapped
                               saveInPublicStorage: true,
                             );
+                            //show snackbar for download
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                backgroundColor: Color(0xffff8800),
+                                content: Text(
+                                  'Downloading...\nCheck Downloads folder in device',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontFamily: 'Montserrat',
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                ),
+                                duration: Duration(seconds: 2),
+                              ),
+                            );
                           },
                           child: Container(
                             width: double.infinity,
