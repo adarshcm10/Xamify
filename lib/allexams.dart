@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 //firestore
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:xamify/examdetails.dart';
+//transitions.dart
+import 'package:xamify/transitions.dart';
 
 class AllExams extends StatefulWidget {
   const AllExams({super.key});
@@ -63,38 +66,51 @@ class _AllExamsState extends State<AllExams> {
                         snapshot.data!.docs.map((DocumentSnapshot document) {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 5),
-                        child: Container(
-                          width: double.infinity,
-                          height: 55,
-                          decoration: ShapeDecoration(
-                            shape: RoundedRectangleBorder(
-                              side: const BorderSide(
-                                  width: 1, color: Color(0xFFBFDAEF)),
-                              borderRadius: BorderRadius.circular(10),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              EnterRoute(
+                                page: ExamDetails(docid: document.id),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            height: 55,
+                            decoration: ShapeDecoration(
+                              shape: RoundedRectangleBorder(
+                                side: const BorderSide(
+                                    width: 1, color: Color(0xFFBFDAEF)),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
                             ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10, right: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      document.id,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 13,
-                                        fontFamily: 'Montserrat',
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                Image.asset('assets/view.png', height: 10),
-                              ],
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 10, right: 10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        document.id,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 13,
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  Image.asset('assets/view.png', height: 10),
+                                ],
+                              ),
                             ),
                           ),
                         ),
