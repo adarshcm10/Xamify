@@ -60,6 +60,27 @@ class _UserNotificationState extends State<UserNotification> {
                       child: CircularProgressIndicator(),
                     );
                   }
+                  //if  data is empty
+                  if (snapshot.data!.docs.isEmpty) {
+                    return Center(
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 50),
+                          Image.asset('assets/notfound.png'),
+                          const SizedBox(height: 30),
+                          const Text(
+                            'No Notifications',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
                   return Column(
                     children: snapshot.data!.docs.map((doc) {
                       var data = doc.data() as Map<String, dynamic>;
