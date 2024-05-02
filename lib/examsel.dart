@@ -86,19 +86,38 @@ class _ExamSelectState extends State<ExamSelect> {
                 right: 0,
                 child: GestureDetector(
                   onTap: () {
-                    //save selectedExams to firestore separately as each element is docid with a field name as the element to collection userdata and doc email and subcollection exams
-                    for (var i = 0; i < selectedExams.length; i++) {
-                      FirebaseFirestore.instance
-                          .collection('userdata')
-                          .doc(email)
-                          .collection('exams')
-                          .doc(selectedExams[i])
-                          .set({
-                        'exam': selectedExams[i],
-                      });
+                    if (selectedExams.isNotEmpty) {
+                      //save selectedExams to firestore separately as each element is docid with a field name as the element to collection userdata and doc email and subcollection exams
+                      for (var i = 0; i < selectedExams.length; i++) {
+                        FirebaseFirestore.instance
+                            .collection('userdata')
+                            .doc(email)
+                            .collection('exams')
+                            .doc(selectedExams[i])
+                            .set({
+                          'exam': selectedExams[i],
+                        });
+                      }
+                      Navigator.pushReplacement(
+                          context, EnterRoute(page: const HomePage()));
+                    } else {
+                      //snackbar if no exam is selected
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'Please select at least one exam',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          backgroundColor: Color(0xFFff8800),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
                     }
-                    Navigator.pushReplacement(
-                        context, EnterRoute(page: const HomePage()));
                   },
                   child: Container(
                     width: double.infinity,
