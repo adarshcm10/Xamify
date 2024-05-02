@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:xamify/allexams.dart';
+import 'package:xamify/eaxmmaterials.dart';
 import 'package:xamify/examdetails.dart';
 import 'package:xamify/notificationdetails.dart';
 import 'package:xamify/transitions.dart';
@@ -198,51 +199,48 @@ class _HomePageState extends State<HomePage> {
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasData) {
-                    return Expanded(
-                      child: GridView.count(
-                        physics: const ClampingScrollPhysics(),
-                        crossAxisCount: 3,
-                        childAspectRatio: 2 /
-                            1, // Adjust this value to control the height of the children
-                        children: snapshot.data!.docs
-                            .map((DocumentSnapshot document) {
-                          return Padding(
-                            padding:
-                                const EdgeInsets.only(right: 2.5, left: 2.5),
-                            child: GestureDetector(
-                              onTap: () {
-                                //navigate to exam details page with doc id
-                                Navigator.push(
-                                  context,
-                                  EnterRoute(
-                                    page: ExamDetails(docid: document.id),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                decoration: ShapeDecoration(
-                                  shape: RoundedRectangleBorder(
-                                    side: const BorderSide(
-                                        width: 1, color: Color(0xFFBFDAEF)),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
+                    return GridView.count(
+                      physics: const ClampingScrollPhysics(),
+                      crossAxisCount: 3,
+                      childAspectRatio: 2 /
+                          1, // Adjust this value to control the height of the children
+                      children:
+                          snapshot.data!.docs.map((DocumentSnapshot document) {
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 2.5, left: 2.5),
+                          child: GestureDetector(
+                            onTap: () {
+                              //navigate to exam details page with doc id
+                              Navigator.push(
+                                context,
+                                EnterRoute(
+                                  page: ExamDetails(docid: document.id),
                                 ),
-                                child: Center(
-                                  child: Text(
-                                    document.id,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 13,
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.w700,
-                                    ),
+                              );
+                            },
+                            child: Container(
+                              decoration: ShapeDecoration(
+                                shape: RoundedRectangleBorder(
+                                  side: const BorderSide(
+                                      width: 1, color: Color(0xFFBFDAEF)),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  document.id,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 13,
+                                    fontFamily: 'Montserrat',
+                                    fontWeight: FontWeight.w700,
                                   ),
                                 ),
                               ),
                             ),
-                          );
-                        }).toList(),
-                      ),
+                          ),
+                        );
+                      }).toList(),
                     );
                   } else {
                     return const Text(
@@ -287,9 +285,18 @@ class _HomePageState extends State<HomePage> {
                             AsyncSnapshot<QuerySnapshot> snapshot) {
                           if (snapshot.hasData) {
                             return Padding(
-                              padding: const EdgeInsets.only(right: 5),
-                              child: Padding(
-                                padding: const EdgeInsets.only(bottom: 5),
+                              padding:
+                                  const EdgeInsets.only(right: 5, bottom: 5),
+                              child: GestureDetector(
+                                onTap: () {
+                                  //navigate to exam materials page with doc id
+                                  Navigator.push(
+                                    context,
+                                    EnterRoute(
+                                      page: ExamMaterials(docid: document.id),
+                                    ),
+                                  );
+                                },
                                 child: Container(
                                   width: double.infinity,
                                   height: 55,
