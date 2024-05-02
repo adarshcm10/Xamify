@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:xamify/authpage.dart';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:xamify/firebase_options.dart';
 //
 
@@ -13,6 +15,18 @@ Future<void> main() async {
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
+  );
+  //request permission for notifications
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+  await messaging.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
   );
   // Initialize the flutter_downloader package
   await FlutterDownloader.initialize(
