@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:xamify/allexams.dart';
-import 'package:xamify/eaxmmaterials.dart';
+import 'package:xamify/exammaterials.dart';
 import 'package:xamify/examdetails.dart';
 import 'package:xamify/notificationdetails.dart';
 import 'package:xamify/transitions.dart';
