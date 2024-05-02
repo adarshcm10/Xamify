@@ -71,77 +71,102 @@ class _ExamMaterialsState extends State<ExamMaterials> {
                       child: CircularProgressIndicator(),
                     );
                   }
-                  return Column(
-                    children: snapshot.data!.docs.map((document) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 5),
-                        child: GestureDetector(
-                          onTap: () async {
-                            await FlutterDownloader.enqueue(
-                              url: document['link'],
-                              savedDir: '/storage/emulated/0/Download/',
-                              showNotification:
-                                  true, // Optional: show a notification with progress
-                              openFileFromNotification:
-                                  true, // Optional: open the file when tapped
-                              saveInPublicStorage: true,
-                            );
-                            //show snackbar for download
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                backgroundColor: Color(0xffff8800),
-                                content: Text(
-                                  'Downloading...\nCheck Downloads folder in device',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                    fontFamily: 'Montserrat',
-                                    fontWeight: FontWeight.w300,
-                                  ),
-                                ),
-                                duration: Duration(seconds: 2),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            width: double.infinity,
-                            height: 55,
-                            decoration: ShapeDecoration(
-                              shape: RoundedRectangleBorder(
-                                side: const BorderSide(
-                                    width: 1, color: Color(0xFFBFDAEF)),
-                                borderRadius: BorderRadius.circular(10),
+                  //if no data return empty container
+                  if (snapshot.data!.docs.isEmpty) {
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 50),
+                      child: Center(
+                        child: Column(
+                          children: [
+                            Image.asset('assets/notfound.png'),
+                            const SizedBox(height: 30),
+                            const Text(
+                              'No materials available',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontFamily: 'Montserrat',
+                                fontWeight: FontWeight.w300,
                               ),
                             ),
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text(
-                                  document['name'],
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontFamily: 'Montserrat',
-                                    fontWeight: FontWeight.w500,
+                          ],
+                        ),
+                      ),
+                    );
+                  } else {
+                    return Column(
+                      children: snapshot.data!.docs.map((document) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 5),
+                          child: GestureDetector(
+                            onTap: () async {
+                              await FlutterDownloader.enqueue(
+                                url: document['link'],
+                                savedDir: '/storage/emulated/0/Download/',
+                                showNotification:
+                                    true, // Optional: show a notification with progress
+                                openFileFromNotification:
+                                    true, // Optional: open the file when tapped
+                                saveInPublicStorage: true,
+                              );
+                              //show snackbar for download
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  backgroundColor: Color(0xffff8800),
+                                  content: Text(
+                                    'Downloading...\nCheck Downloads folder in device',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontFamily: 'Montserrat',
+                                      fontWeight: FontWeight.w300,
+                                    ),
                                   ),
+                                  duration: Duration(seconds: 2),
                                 ),
-                                IconButton(
-                                  icon: const Icon(
-                                    Icons.download,
-                                    color: Colors.white,
+                              );
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              height: 55,
+                              decoration: ShapeDecoration(
+                                shape: RoundedRectangleBorder(
+                                  side: const BorderSide(
+                                      width: 1, color: Color(0xFFBFDAEF)),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    document['name'],
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontFamily: 'Montserrat',
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                   ),
-                                  onPressed: () {
-                                    //download file
-                                  },
-                                ),
-                              ],
+                                  IconButton(
+                                    icon: const Icon(
+                                      Icons.download,
+                                      color: Colors.white,
+                                    ),
+                                    onPressed: () {
+                                      //download file
+                                    },
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    }).toList(),
-                  );
+                        );
+                      }).toList(),
+                    );
+                  }
                 },
               ),
             ],
