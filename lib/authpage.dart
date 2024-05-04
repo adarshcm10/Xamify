@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 //firebase_auth
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:xamify/getstarted.dart';
-import 'package:xamify/home.dart';
+import 'package:xamify/navbar.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
@@ -19,7 +19,7 @@ class _AuthPageState extends State<AuthPage> {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
           if (snapshot.hasData) {
-            return const HomePage();
+            return const NavBar();
           } else {
             return const GetStarted();
           }
