@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:xamify/forgot.dart';
-import 'package:xamify/home.dart';
+import 'package:xamify/navbar.dart';
 import 'package:xamify/signup.dart';
 import 'package:xamify/transitions.dart';
 //auth
@@ -318,9 +318,9 @@ class _SpalshScreenState extends State<SpalshScreen> {
         FirebaseFirestore.instance
             .collection('userdata')
             .doc(widget.email)
-            .set({'token': value});
+            .update({'token': value});
       });
-      Navigator.pushReplacement(context, FadeRoute(page: const HomePage()));
+      Navigator.pushReplacement(context, FadeRoute(page: const NavBar()));
     }).catchError((e) {
       //pop
       Navigator.pop(context);
