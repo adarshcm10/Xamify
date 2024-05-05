@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:xamify/examsel.dart';
 import 'package:xamify/transitions.dart';
@@ -367,10 +368,14 @@ class _SpalshScreenState extends State<SpalshScreen> {
     )
         .then((value) {
       //save name to collection userdata and doc email
-      FirebaseFirestore.instance
-          .collection('userdata')
-          .doc(widget.email)
-          .set({'name': widget.name});
+      FirebaseMessaging messaging = FirebaseMessaging.instance;
+      messaging.getToken().then((value) {
+        FirebaseFirestore.instance
+            .collection('userdata')
+            .doc(widget.email)
+            .set({'token': value, 'name': widget.name});
+      });
+      //pop
       Navigator.pushReplacement(context, FadeRoute(page: const ExamSelect()));
     }).catchError((e) {
       //pop
