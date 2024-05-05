@@ -7,6 +7,10 @@ import 'package:xamify/signup.dart';
 import 'package:xamify/transitions.dart';
 //auth
 import 'package:firebase_auth/firebase_auth.dart';
+//firebase messaging
+import 'package:firebase_messaging/firebase_messaging.dart';
+//firestore
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -308,6 +312,14 @@ class _SpalshScreenState extends State<SpalshScreen> {
         .signInWithEmailAndPassword(
             email: widget.email, password: widget.password)
         .then((value) {
+      //save device token for notification to collection userdata document email at field token
+      FirebaseMessaging messaging = FirebaseMessaging.instance;
+      messaging.getToken().then((value) {
+        FirebaseFirestore.instance
+            .collection('userdata')
+            .doc(widget.email)
+            .set({'token': value});
+      });
       Navigator.pushReplacement(context, FadeRoute(page: const HomePage()));
     }).catchError((e) {
       //pop
