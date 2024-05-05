@@ -382,9 +382,9 @@ class _HomePageState extends State<HomePage> {
                       }).toList(),
                     );
                   } else {
-                    return Image.asset(
-                      'assets/loading.gif',
-                      fit: BoxFit.fill,
+                    return const Text(
+                      'Loading...',
+                      style: TextStyle(color: Colors.white),
                     );
                   }
                 },
