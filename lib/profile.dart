@@ -335,49 +335,121 @@ class _ProfilePageState extends State<ProfilePage> {
                           snapshot.data!.docs.map((DocumentSnapshot document) {
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 5),
-                          child: GestureDetector(
-                            onTap: () {
-                              //goto examdetails page
-                              Navigator.push(
-                                context,
-                                SlideRightRoute(
-                                  page: ExamDetails(
-                                    docid: document.id,
-                                  ),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              width: double.infinity,
-                              height: 55,
-                              decoration: ShapeDecoration(
-                                shape: RoundedRectangleBorder(
-                                  side: const BorderSide(
-                                      width: 1, color: Color(0xFFBFDAEF)),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 10, right: 10),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      document.id,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontFamily: 'Montserrat',
-                                        fontWeight: FontWeight.w500,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    //goto examdetails page
+                                    Navigator.push(
+                                      context,
+                                      SlideRightRoute(
+                                        page: ExamDetails(
+                                          docid: document.id,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    height: 55,
+                                    decoration: ShapeDecoration(
+                                      shape: RoundedRectangleBorder(
+                                        side: const BorderSide(
+                                            width: 1, color: Color(0xFFBFDAEF)),
+                                        borderRadius: BorderRadius.circular(10),
                                       ),
                                     ),
-                                    Image.asset('assets/view.png', height: 11),
-                                  ],
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 10, right: 10),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            document.id,
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontFamily: 'Montserrat',
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          Image.asset('assets/view.png',
+                                              height: 11),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
+                              IconButton(
+                                icon: const Icon(Icons.delete,
+                                    color: Colors.white),
+                                onPressed: () async {
+                                  final bool? confirm = await showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        backgroundColor:
+                                            const Color(0xff1E7BC5),
+                                        title: const Text('Confirm',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                              fontFamily: 'Montserrat',
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                            textAlign: TextAlign.start),
+                                        content: const Text(
+                                            'Are you sure you want to delete this exam?',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15,
+                                              fontFamily: 'Montserrat',
+                                              fontWeight: FontWeight.w500,
+                                            )),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: const Text('CANCEL',
+                                                style: TextStyle(
+                                                  color: Color(0xffff8800),
+                                                  fontSize: 15,
+                                                  fontFamily: 'Montserrat',
+                                                  fontWeight: FontWeight.w500,
+                                                )),
+                                            onPressed: () =>
+                                                Navigator.of(context)
+                                                    .pop(false),
+                                          ),
+                                          TextButton(
+                                            child: const Text('YES',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 15,
+                                                  fontFamily: 'Montserrat',
+                                                  fontWeight: FontWeight.w500,
+                                                )),
+                                            onPressed: () =>
+                                                Navigator.of(context).pop(true),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+
+                                  if (confirm == true) {
+                                    await FirebaseFirestore.instance
+                                        .collection('userdata')
+                                        .doc(FirebaseAuth
+                                            .instance.currentUser!.email)
+                                        .collection('exams')
+                                        .doc(document.id)
+                                        .delete();
+                                  }
+                                },
+                              ),
+                            ],
                           ),
                         );
                       }).toList(),
