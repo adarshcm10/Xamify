@@ -276,7 +276,9 @@ class _SearchPageState extends State<SearchPage> {
                               );
                             } else {
                               return const Center(
-                                child: CircularProgressIndicator(),
+                                child: CircularProgressIndicator(
+                                  color: Color(0xff73AEDA),
+                                ),
                               );
                             }
                           },
@@ -445,7 +447,9 @@ class _SearchPageState extends State<SearchPage> {
                               );
                             } else {
                               return const Center(
-                                child: CircularProgressIndicator(),
+                                child: CircularProgressIndicator(
+                                  color: Color(0xff73AEDA),
+                                ),
                               );
                             }
                           },
