@@ -1,9 +1,10 @@
 // ignore_for_file: must_be_immutable, use_build_context_synchronously
 //firestore
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
 
 import 'package:flutter/material.dart';
+//url_launcher
+import 'package:url_launcher/url_launcher.dart';
 
 class ExamMaterials extends StatefulWidget {
   String docid;
@@ -100,31 +101,12 @@ class _ExamMaterialsState extends State<ExamMaterials> {
                           padding: const EdgeInsets.only(bottom: 5),
                           child: GestureDetector(
                             onTap: () async {
-                              await FlutterDownloader.enqueue(
-                                url: document['link'],
-                                savedDir: '/storage/emulated/0/Download/',
-                                showNotification:
-                                    true, // Optional: show a notification with progress
-                                openFileFromNotification:
-                                    true, // Optional: open the file when tapped
-                                saveInPublicStorage: true,
-                              );
+                              //open url in browser
+                              await launchUrl(Uri.parse(document['link']),
+                                  mode:
+                                      LaunchMode.externalNonBrowserApplication);
+
                               //show snackbar for download
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  backgroundColor: Color(0xffff8800),
-                                  content: Text(
-                                    'Downloading...\nCheck Downloads folder in device',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.w300,
-                                    ),
-                                  ),
-                                  duration: Duration(seconds: 2),
-                                ),
-                              );
                             },
                             child: Container(
                               width: double.infinity,
@@ -150,14 +132,9 @@ class _ExamMaterialsState extends State<ExamMaterials> {
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
-                                  IconButton(
-                                    icon: const Icon(
-                                      Icons.download,
-                                      color: Colors.white,
-                                    ),
-                                    onPressed: () {
-                                      //download file
-                                    },
+                                  const Icon(
+                                    Icons.download,
+                                    color: Colors.white,
                                   ),
                                 ],
                               ),
