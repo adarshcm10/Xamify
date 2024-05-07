@@ -218,9 +218,6 @@ class _SignInState extends State<SignIn> {
                                       Text('Email or or password is empty!'),
                                   duration: Duration(seconds: 3)));
                         }
-
-                        // Navigator.push(
-                        //     context, FadeRoute(page: const HomePage()));
                       },
                       child: Container(
                         width: double.infinity,
@@ -319,6 +316,22 @@ class _SpalshScreenState extends State<SpalshScreen> {
             .collection('userdata')
             .doc(widget.email)
             .update({'token': value});
+        //update the token in document id email in subcollection token of all documents inthe collection exam
+        FirebaseFirestore.instance.collection('exams').get().then((value) {
+          for (var i = 0; i < value.docs.length; i++) {
+            FirebaseFirestore.instance
+                .collection('exams')
+                .doc(value.docs[i].id)
+                .collection('token')
+                .doc(widget.email)
+                .get()
+                .then((docSnapshot) {
+              if (docSnapshot.exists) {
+                docSnapshot.reference.set({'token': value});
+              }
+            });
+          }
+        });
       });
       Navigator.pushReplacement(context, FadeRoute(page: const NavBar()));
     }).catchError((e) {
