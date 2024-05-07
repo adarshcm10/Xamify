@@ -47,97 +47,122 @@ class _UserNotificationState extends State<UserNotification> {
                 ),
               ),
               const SizedBox(height: 10),
-              //get all title and head from collection userdata doc email subcollection notification
-              StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
+              FutureBuilder<QuerySnapshot>(
+                future: FirebaseFirestore.instance
                     .collection('userdata')
                     .doc(FirebaseAuth.instance.currentUser!.email)
-                    .collection('notification')
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+                    .collection('exams')
+                    .get(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    return const Text('Something went wrong');
                   }
-                  //if  data is empty
-                  if (snapshot.data!.docs.isEmpty) {
-                    return Center(
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 50),
-                          Image.asset('assets/notfound.png'),
-                          const SizedBox(height: 30),
-                          const Text(
-                            'No Notifications',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
+
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Text("Loading");
                   }
+
                   return Column(
-                    children: snapshot.data!.docs.map((doc) {
-                      var data = doc.data() as Map<String, dynamic>;
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 5),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                FadeRoute(
-                                    page: NotificationDetails(
-                                        docid: doc.id,
-                                        id: data['id'].toString())));
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.only(left: 10, right: 10),
-                            width: double.infinity,
-                            height: 55,
-                            decoration: ShapeDecoration(
-                              shape: RoundedRectangleBorder(
-                                side: const BorderSide(
-                                    width: 1, color: Color(0xFFBFDAEF)),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      data['title'],
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 13,
-                                        fontFamily: 'Montserrat',
-                                        fontWeight: FontWeight.w700,
+                    children:
+                        snapshot.data!.docs.map((DocumentSnapshot document) {
+                      return FutureBuilder<QuerySnapshot>(
+                        future: FirebaseFirestore.instance
+                            .collection('exams')
+                            .doc(document.id) // replace with your document id
+                            .collection('notification')
+                            .orderBy('timestamp', descending: true)
+                            .get(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> snapshot) {
+                          String examId = document.id;
+                          if (snapshot.hasError) {
+                            return const Text('Something went wrong');
+                          }
+
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Text("Loading...",
+                                style: TextStyle(color: Colors.white));
+                          }
+
+                          return Column(
+                            children: snapshot.data!.docs
+                                .map((DocumentSnapshot document) {
+                              Map<String, dynamic> data =
+                                  document.data() as Map<String, dynamic>;
+
+                              // Replace this with the actual widget you want to display for each document
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 5),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      EnterRoute(
+                                        page: NotificationDetails(
+                                          docid: examId,
+                                          id: document.id,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.only(
+                                        left: 10, right: 10),
+                                    width: double.infinity,
+                                    height: 50,
+                                    decoration: ShapeDecoration(
+                                      shape: RoundedRectangleBorder(
+                                        side: const BorderSide(
+                                            width: 1, color: Color(0xFFBFDAEF)),
+                                        borderRadius: BorderRadius.circular(10),
                                       ),
                                     ),
-                                    Text(
-                                      data['head'],
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 13,
-                                        fontFamily: 'Montserrat',
-                                        fontWeight: FontWeight.w200,
-                                      ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(examId,
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 13,
+                                                  fontFamily: 'Montserrat',
+                                                  fontWeight: FontWeight.w500,
+                                                )),
+                                            Text(
+                                              data['title'].length > 20
+                                                  ? data['title']
+                                                          .substring(0, 20) +
+                                                      '...'
+                                                  : data['title'],
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 13,
+                                                fontFamily: 'Montserrat',
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Image.asset('assets/view.png',
+                                            height: 10),
+                                      ],
                                     ),
-                                  ],
+                                  ),
                                 ),
-                                Image.asset('assets/view.png', height: 12),
-                              ],
-                            ),
-                          ),
-                        ),
+                              );
+                            }).toList(),
+                          );
+                        },
                       );
                     }).toList(),
                   );
