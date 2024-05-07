@@ -4,7 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 //firestore
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/widgets.dart';
+//messaging
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:xamify/home.dart';
 import 'package:xamify/transitions.dart';
 
@@ -87,6 +88,9 @@ class _ExamSelectState extends State<ExamSelect> {
                 child: GestureDetector(
                   onTap: () {
                     if (selectedExams.isNotEmpty) {
+                      //get device token
+                      FirebaseMessaging messaging = FirebaseMessaging.instance;
+
                       //save selectedExams to firestore separately as each element is docid with a field name as the element to collection userdata and doc email and subcollection exams
                       for (var i = 0; i < selectedExams.length; i++) {
                         FirebaseFirestore.instance
@@ -97,7 +101,19 @@ class _ExamSelectState extends State<ExamSelect> {
                             .set({
                           'exam': selectedExams[i],
                         });
+                        //save device token to each exam doc subcollection token
+                        messaging.getToken().then((value) {
+                          FirebaseFirestore.instance
+                              .collection('exams')
+                              .doc(selectedExams[i])
+                              .collection('token')
+                              .doc(email)
+                              .set({
+                            'token': value,
+                          });
+                        });
                       }
+
                       Navigator.pushReplacement(
                           context, EnterRoute(page: const HomePage()));
                     } else {
