@@ -316,6 +316,7 @@ class _SpalshScreenState extends State<SpalshScreen> {
             .collection('userdata')
             .doc(widget.email)
             .update({'token': value});
+        String tokenvalue = value.toString();
         //update the token in document id email in subcollection token of all documents inthe collection exam
         FirebaseFirestore.instance.collection('exams').get().then((value) {
           for (var i = 0; i < value.docs.length; i++) {
@@ -327,7 +328,7 @@ class _SpalshScreenState extends State<SpalshScreen> {
                 .get()
                 .then((docSnapshot) {
               if (docSnapshot.exists) {
-                docSnapshot.reference.set({'token': value});
+                docSnapshot.reference.update({'token': tokenvalue});
               }
             });
           }
