@@ -202,7 +202,7 @@ class _ExamDetailsState extends State<ExamDetails> {
                     .collection('exams')
                     .doc(widget.docid)
                     .collection('notification')
-                    .orderBy('date', descending: true)
+                    .orderBy('timestamp', descending: true)
                     .snapshots(),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (!snapshot.hasData) {
@@ -249,10 +249,10 @@ class _ExamDetailsState extends State<ExamDetails> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        data['head'].length > 20
-                                            ? data['head'].substring(0, 20) +
+                                        data['title'].length > 20
+                                            ? data['title'].substring(0, 20) +
                                                 '...'
-                                            : data['head'],
+                                            : data['title'],
                                         style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 15,
