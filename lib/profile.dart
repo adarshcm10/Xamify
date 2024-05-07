@@ -343,6 +343,31 @@ class _ProfilePageState extends State<ProfilePage> {
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
+                      //if collection empty
+                      if (snapshot.data!.docs.isEmpty) {
+                        return Container(
+                          width: double.infinity,
+                          height: 60,
+                          decoration: ShapeDecoration(
+                            shape: RoundedRectangleBorder(
+                              side: const BorderSide(
+                                  width: 1, color: Color(0xFFBFDAEF)),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              'No exams selected',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 13,
+                                fontFamily: 'Montserrat',
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
+                          ),
+                        );
+                      }
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
