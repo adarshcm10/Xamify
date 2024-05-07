@@ -489,6 +489,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                           .collection('exams')
                                           .doc(document.id)
                                           .delete();
+                                      //delete document with docid as useremail from collection exams, document document.id and subcollection tokens
+                                      await FirebaseFirestore.instance
+                                          .collection('exams')
+                                          .doc(document.id)
+                                          .collection('token')
+                                          .doc(FirebaseAuth
+                                              .instance.currentUser!.email)
+                                          .delete();
                                     }
                                   },
                                 ),
