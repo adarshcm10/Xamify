@@ -6,7 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:xamify/allexams.dart';
 import 'package:xamify/exammaterials.dart';
 import 'package:xamify/examdetails.dart';
-import 'package:xamify/notificationdetails.dart';
 import 'package:xamify/transitions.dart';
 //firestore
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -20,25 +19,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Future<List<QueryDocumentSnapshot>> getLatestDocuments() async {
-    QuerySnapshot snapshot =
-        await FirebaseFirestore.instance.collection('exams').get();
-    List<QueryDocumentSnapshot> documents = [];
-
-    for (var doc in snapshot.docs) {
-      QuerySnapshot subSnapshot = await FirebaseFirestore.instance
-          .collection('exams')
-          .doc(doc.id)
-          .collection('notification')
-          .orderBy('time', descending: true)
-          .limit(1)
-          .get();
-      documents.addAll(subSnapshot.docs);
-    }
-
-    return documents;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,162 +63,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               const SizedBox(height: 10),
-              FutureBuilder<QuerySnapshot>(
-                future: FirebaseFirestore.instance
-                    .collection('userdata')
-                    .doc(FirebaseAuth.instance.currentUser!.email)
-                    .collection('exams')
-                    .get(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.hasError) {
-                    return const Text('Something went wrong');
-                  }
 
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Text("Loading");
-                  }
-                  //if collection empty dispaly no notification
-                  if (snapshot.data!.docs.isEmpty) {
-                    return Container(
-                      width: double.infinity,
-                      height: 60,
-                      decoration: ShapeDecoration(
-                        shape: RoundedRectangleBorder(
-                          side: const BorderSide(
-                              width: 1, color: Color(0xFFBFDAEF)),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          'No notifications available',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 13,
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.w300,
-                          ),
-                        ),
-                      ),
-                    );
-                  }
-
-                  // return Column(
-                  //   children:
-                  //       snapshot.data!.docs.map((DocumentSnapshot document) {
-                  //     return FutureBuilder<QuerySnapshot>(
-                  //       future: FirebaseFirestore.instance
-                  //           .collection('exams')
-                  //           .doc(document.id) // replace with your document id
-                  //           .collection('notification')
-                  //           .orderBy('timestamp', descending: true)
-                  //           .get(),
-                  //       builder: (BuildContext context,
-                  //           AsyncSnapshot<QuerySnapshot> snapshot) {
-                  //         String examId = document.id;
-                  //         if (snapshot.hasError) {
-                  //           return const Text('Something went wrong');
-                  //         }
-
-                  //         if (snapshot.connectionState ==
-                  //             ConnectionState.waiting) {
-                  //           return const Text("Loading...",
-                  //               style: TextStyle(color: Colors.white));
-                  //         }
-
-                  //       },
-                  //     );
-                  //   }).toList(),
-                  // );
-                  //dispalay only one document from all docs read above which have the latest timestamp value
-                  return FutureBuilder<List<QueryDocumentSnapshot>>(
-                    future: getLatestDocuments(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<List<QueryDocumentSnapshot>> snapshot) {
-                      if (snapshot.hasError) {
-                        return const Text('Something went wrong',
-                            style: TextStyle(color: Colors.white));
-                      }
-
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Text("Loading...",
-                            style: TextStyle(color: Colors.white));
-                      }
-
-                      // Get the latest document
-                      QueryDocumentSnapshot latestDocument = snapshot.data!
-                          .reduce((curr, next) =>
-                              curr.get('time').compareTo(next.get('time')) > 0
-                                  ? curr
-                                  : next);
-
-                      // Display the latest document
-                      // Replace this with your actual code to display the document
-                      return //display the latest notification
-                          GestureDetector(
-                        onTap: () {
-                          //navigate to notification details page with doc id and notification id
-                          Navigator.push(
-                            context,
-                            EnterRoute(
-                              page: NotificationDetails(
-                                docid:
-                                    latestDocument.reference.parent.parent!.id,
-                                id: latestDocument.id,
-                              ),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.only(left: 10, right: 10),
-                          width: double.infinity,
-                          height: 60,
-                          decoration: ShapeDecoration(
-                            shape: RoundedRectangleBorder(
-                              side: const BorderSide(
-                                  width: 1, color: Color(0xFFBFDAEF)),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    latestDocument.get('title'),
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 5),
-                                  Text(
-                                    latestDocument.get('desc'),
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 13,
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.w300,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Image.asset('assets/view.png', height: 10),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
               const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
