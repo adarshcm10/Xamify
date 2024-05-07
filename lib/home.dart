@@ -98,6 +98,31 @@ class _HomePageState extends State<HomePage> {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Text("Loading");
                   }
+                  //if collection empty dispaly no notification
+                  if (snapshot.data!.docs.isEmpty) {
+                    return Container(
+                      width: double.infinity,
+                      height: 60,
+                      decoration: ShapeDecoration(
+                        shape: RoundedRectangleBorder(
+                          side: const BorderSide(
+                              width: 1, color: Color(0xFFBFDAEF)),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          'No notifications available',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 13,
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                      ),
+                    );
+                  }
 
                   // return Column(
                   //   children:
