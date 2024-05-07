@@ -222,6 +222,7 @@ class _ExamDetailsState extends State<ExamDetails> {
                                 FadeRoute(
                                   page: NotificationDetails(
                                     docid: widget.docid,
+                                    id: data.id,
                                   ),
                                 ),
                               );

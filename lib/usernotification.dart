@@ -91,7 +91,9 @@ class _UserNotificationState extends State<UserNotification> {
                             Navigator.push(
                                 context,
                                 FadeRoute(
-                                    page: NotificationDetails(docid: doc.id)));
+                                    page: NotificationDetails(
+                                        docid: doc.id,
+                                        id: data['id'].toString())));
                           },
                           child: Container(
                             padding: const EdgeInsets.only(left: 10, right: 10),
