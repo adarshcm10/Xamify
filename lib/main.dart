@@ -4,7 +4,6 @@ import 'package:xamify/authpage.dart';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:xamify/firebase_options.dart';
-//
 
 Future<void> main() async {
   //ask for storage permission
