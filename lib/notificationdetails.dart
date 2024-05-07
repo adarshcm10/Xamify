@@ -1,6 +1,5 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 //firestore
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,7 +10,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 class NotificationDetails extends StatefulWidget {
   String docid;
-  NotificationDetails({super.key, required this.docid});
+  String id;
+  NotificationDetails({super.key, required this.docid, required this.id});
 
   @override
   State<NotificationDetails> createState() => _NotificationDetailsState();
@@ -32,6 +32,21 @@ class _NotificationDetailsState extends State<NotificationDetails> {
             Navigator.pop(context);
           },
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete, color: Colors.white),
+            onPressed: () {
+              Navigator.pop(context);
+              //delete notification
+              FirebaseFirestore.instance
+                  .collection('exams')
+                  .doc(widget.docid)
+                  .collection('notification')
+                  .doc(widget.id)
+                  .delete();
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -41,10 +56,10 @@ class _NotificationDetailsState extends State<NotificationDetails> {
               //get title,head, desc and link from collection userdata doc email subcollection notification and docid doc
               StreamBuilder<DocumentSnapshot>(
                 stream: FirebaseFirestore.instance
-                    .collection('userdata')
-                    .doc(FirebaseAuth.instance.currentUser!.email)
-                    .collection('notification')
+                    .collection('exams')
                     .doc(widget.docid)
+                    .collection('notification')
+                    .doc(widget.id)
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
@@ -66,20 +81,12 @@ class _NotificationDetailsState extends State<NotificationDetails> {
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                      Text(
-                        data['head'],
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.w200,
-                        ),
-                      ),
+
                       //convert timestamp to date dd-mm-yyyy
                       Text(
                         'Important date: ${DateFormat('dd-MM-yyyy').format(
                           DateTime.fromMillisecondsSinceEpoch(
-                            data['date'].seconds * 1000,
+                            data['timestamp'].seconds * 1000,
                           ),
                         )}',
                         style: const TextStyle(
@@ -89,17 +96,17 @@ class _NotificationDetailsState extends State<NotificationDetails> {
                           fontWeight: FontWeight.w400,
                         ),
                       ),
-                      const SizedBox(height: 20),
                       Text(
                         data['desc'],
                         style: const TextStyle(
                           color: Colors.white,
-                          fontSize: 15,
+                          fontSize: 18,
                           fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.w200,
                         ),
                       ),
-                      const SizedBox(height: 30),
+                      const SizedBox(height: 20),
+
                       GestureDetector(
                           onTap: () async {
                             //launch url
