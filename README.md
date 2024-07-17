@@ -1,5 +1,5 @@
 # xamify
-Built with Flutter, Xamify is designed to be a one-stop solution for students preparing for public exams in India.
+Built with Flutter, Xamify is designed to be a one-stop solution for students preparing for public exams.
 
 With Xamify, admins can effortlessly add new exams, schedule important notifications, and upload valuable study materials. Students can easily sign up, select their exams, and receive timely updates and study resources.
 
