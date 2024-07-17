@@ -15,7 +15,7 @@ With Xamify, admins can effortlessly add new exams, schedule important notificat
 ![](UI/04.jpg)
 
 # Installation
-- Clone the repository: `git clone https://github.com/adarshcm10/xamify.git`
+- Clone the repository: `git clone https://github.com/adarshcm10/Xamify.git`
 
 - Open the project in your preferred development environment (e.g., Android Studio, Visual Studio Code).
 
